@@ -1,0 +1,192 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Font | Lazy Canvas - v1.1.5</title><meta name="description" content="Documentation for Lazy Canvas"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-sys-color-primary: #ffb3b1;
+    --md-sys-color-on-primary: #611118;
+    --md-sys-color-primary-container: #7f282c;
+    --md-sys-color-on-primary-container: #ffdad8;
+    --md-sys-color-secondary: #e6bdbb;
+    --md-sys-color-on-secondary: #442929;
+    --md-sys-color-secondary-container: #5d3f3e;
+    --md-sys-color-on-secondary-container: #ffdad8;
+    --md-sys-color-tertiary: #e4c18d;
+    --md-sys-color-on-tertiary: #412d05;
+    --md-sys-color-tertiary-container: #5a4319;
+    --md-sys-color-on-tertiary-container: #ffdeac;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-on-error-container: #ffb4ab;
+    --md-sys-color-background: #201a1a;
+    --md-sys-color-on-background: #ede0df;
+    --md-sys-color-surface: #201a1a;
+    --md-sys-color-on-surface: #ede0df;
+    --md-sys-color-surface-variant: #524343;
+    --md-sys-color-on-surface-variant: #d7c1c0;
+    --md-sys-color-outline: #a08c8b;
+    --md-sys-color-outline-variant: #524343;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #ede0df;
+    --md-sys-color-inverse-on-surface: #362f2e;
+    --md-sys-color-inverse-primary: #9e3f42;
+    --md-sys-color-surface-dim: #181212;
+    --md-sys-color-surface-bright: #3f3737;
+    --md-sys-color-surface-container-lowest: #120d0d;
+    --md-sys-color-surface-container-low: #201a1a;
+    --md-sys-color-surface-container: #251e1e;
+    --md-sys-color-surface-container-high: #2f2828;
+    --md-sys-color-surface-container-highest: #3a3333
+  }
+}
+:root[data-theme="dark"] {
+  --md-sys-color-primary: #ffb3b1;
+  --md-sys-color-on-primary: #611118;
+  --md-sys-color-primary-container: #7f282c;
+  --md-sys-color-on-primary-container: #ffdad8;
+  --md-sys-color-secondary: #e6bdbb;
+  --md-sys-color-on-secondary: #442929;
+  --md-sys-color-secondary-container: #5d3f3e;
+  --md-sys-color-on-secondary-container: #ffdad8;
+  --md-sys-color-tertiary: #e4c18d;
+  --md-sys-color-on-tertiary: #412d05;
+  --md-sys-color-tertiary-container: #5a4319;
+  --md-sys-color-on-tertiary-container: #ffdeac;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffb4ab;
+  --md-sys-color-background: #201a1a;
+  --md-sys-color-on-background: #ede0df;
+  --md-sys-color-surface: #201a1a;
+  --md-sys-color-on-surface: #ede0df;
+  --md-sys-color-surface-variant: #524343;
+  --md-sys-color-on-surface-variant: #d7c1c0;
+  --md-sys-color-outline: #a08c8b;
+  --md-sys-color-outline-variant: #524343;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #ede0df;
+  --md-sys-color-inverse-on-surface: #362f2e;
+  --md-sys-color-inverse-primary: #9e3f42;
+  --md-sys-color-surface-dim: #181212;
+  --md-sys-color-surface-bright: #3f3737;
+  --md-sys-color-surface-container-lowest: #120d0d;
+  --md-sys-color-surface-container-low: #201a1a;
+  --md-sys-color-surface-container: #251e1e;
+  --md-sys-color-surface-container-high: #2f2828;
+  --md-sys-color-surface-container-highest: #3a3333
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --md-sys-color-primary: #9e3f42;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #ffdad8;
+    --md-sys-color-on-primary-container: #410007;
+    --md-sys-color-secondary: #775655;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #ffdad8;
+    --md-sys-color-on-secondary-container: #2c1515;
+    --md-sys-color-tertiary: #745a2f;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #ffdeac;
+    --md-sys-color-on-tertiary-container: #281900;
+    --md-sys-color-error: #ba1a1a;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #ffdad6;
+    --md-sys-color-on-error-container: #410002;
+    --md-sys-color-background: #fffbff;
+    --md-sys-color-on-background: #201a1a;
+    --md-sys-color-surface: #fffbff;
+    --md-sys-color-on-surface: #201a1a;
+    --md-sys-color-surface-variant: #f4dddc;
+    --md-sys-color-on-surface-variant: #524343;
+    --md-sys-color-outline: #857372;
+    --md-sys-color-outline-variant: #d7c1c0;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-inverse-surface: #362f2e;
+    --md-sys-color-inverse-on-surface: #fbeeed;
+    --md-sys-color-inverse-primary: #ffb3b1;
+    --md-sys-color-surface-dim: #e4d7d6;
+    --md-sys-color-surface-bright: #fff8f7;
+    --md-sys-color-surface-container-lowest: #ffffff;
+    --md-sys-color-surface-container-low: #fef1f0;
+    --md-sys-color-surface-container: #f8ebea;
+    --md-sys-color-surface-container-high: #f2e5e4;
+    --md-sys-color-surface-container-highest: #ede0df
+  }
+}
+:root[data-theme="light"] {
+  --md-sys-color-primary: #9e3f42;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #ffdad8;
+  --md-sys-color-on-primary-container: #410007;
+  --md-sys-color-secondary: #775655;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #ffdad8;
+  --md-sys-color-on-secondary-container: #2c1515;
+  --md-sys-color-tertiary: #745a2f;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #ffdeac;
+  --md-sys-color-on-tertiary-container: #281900;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #fffbff;
+  --md-sys-color-on-background: #201a1a;
+  --md-sys-color-surface: #fffbff;
+  --md-sys-color-on-surface: #201a1a;
+  --md-sys-color-surface-variant: #f4dddc;
+  --md-sys-color-on-surface-variant: #524343;
+  --md-sys-color-outline: #857372;
+  --md-sys-color-outline-variant: #d7c1c0;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #362f2e;
+  --md-sys-color-inverse-on-surface: #fbeeed;
+  --md-sys-color-inverse-primary: #ffb3b1;
+  --md-sys-color-surface-dim: #e4d7d6;
+  --md-sys-color-surface-bright: #fff8f7;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #fef1f0;
+  --md-sys-color-surface-container: #f8ebea;
+  --md-sys-color-surface-container-high: #f2e5e4;
+  --md-sys-color-surface-container-highest: #ede0df
+}
+</style><link rel="stylesheet" href="../assets/material-style.css"/><link rel="icon" href="../favicon.ico" />
+</head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">Lazy Canvas</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><ul class="tsd-breadcrumb"><li><a href="../modules.html">Lazy Canvas</a></li><li><a href="Font.html">Font</a></li></ul><h1>Class Font</h1></div><section class="tsd-panel tsd-comment"><div class="tsd-comment tsd-typography"><h4 class="tsd-anchor-link"><a id="Example" class="tsd-anchor"></a>Example<a href="#Example" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="ts"><span class="hl-0">const</span><span class="hl-1"> { </span><span class="hl-2">LazyCanvas</span><span class="hl-1">, </span><span class="hl-2">Font</span><span class="hl-1"> } = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&#39;@hitomihiumi/lazy-canvas&#39;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-5">fontOne</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Font</span><span class="hl-1">()</span><br/><span class="hl-1">.</span><span class="hl-3">setFamily</span><span class="hl-1">(</span><span class="hl-4">&quot;JoeKubert&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">.</span><span class="hl-3">setWeight</span><span class="hl-1">(</span><span class="hl-4">&quot;regular&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">.</span><span class="hl-3">setPath</span><span class="hl-1">(</span><span class="hl-4">&quot;./fonts/v_CCJoeKubert-Doubled_v1.3.ttf&quot;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">let</span><span class="hl-1"> </span><span class="hl-5">fontTwo</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">Font</span><span class="hl-1">()</span><br/><span class="hl-1">.</span><span class="hl-3">setFamily</span><span class="hl-1">(</span><span class="hl-4">&quot;Koulen&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">.</span><span class="hl-3">setWeight</span><span class="hl-1">(</span><span class="hl-4">&quot;regular&quot;</span><span class="hl-1">)</span><br/><span class="hl-1">.</span><span class="hl-3">setPath</span><span class="hl-1">(</span><span class="hl-4">&quot;./fonts/Koulen-Regular.ttf&quot;</span><span class="hl-1">)</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">lazy</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">LazyCanvas</span><span class="hl-1">()</span><br/><span class="hl-1">.</span><span class="hl-3">loadFonts</span><span class="hl-1">(</span><span class="hl-5">fontOne</span><span class="hl-1">, </span><span class="hl-5">fontTwo</span><span class="hl-1">)</span><br/><span class="hl-8">//...</span>
+</code><button type="button">Copy</button></pre>
+
+</div></section><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L21">utils/Font.ts:21</a></li></ul></aside><section class="tsd-panel-group tsd-index-group"><section class="tsd-panel tsd-index-panel"><details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><h5 class="tsd-index-heading uppercase" role="button" aria-expanded="false" tabIndex="0"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="../assets/icons.svg#icon-chevronSmall"></use></svg> Index</h5></summary><div class="tsd-accordion-details"><section class="tsd-index-section"><h3 class="tsd-index-heading">Constructors</h3><div class="tsd-index-list"><a href="Font.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a>
+</div></section><section class="tsd-index-section"><h3 class="tsd-index-heading">Properties</h3><div class="tsd-index-list"><a href="Font.html#data" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-1024"></use></svg><span>data</span></a>
+</div></section><section class="tsd-index-section"><h3 class="tsd-index-heading">Methods</h3><div class="tsd-index-list"><a href="Font.html#setFamily" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Family</span></a>
+<a href="Font.html#setPath" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Path</span></a>
+<a href="Font.html#setWeight" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Weight</span></a>
+<a href="Font.html#toJSON" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>toJSON</span></a>
+</div></section></div></details></section></section><details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg> Constructors</h2></summary><section><section class="tsd-panel tsd-member"><a id="constructor" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="constructor.new_Font" class="tsd-anchor"></a><span class="tsd-kind-constructor-signature">new <wbr/>Font</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">data</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a><a href="#constructor.new_Font" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><div class="tsd-parameters"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameter-list"><li><span><code class="tsd-tag">Optional</code><span class="tsd-kind-parameter">data</span>: <a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a></span></li></ul></div><h4 class="tsd-returns-title">Returns <a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a></h4><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L24">utils/Font.ts:24</a></li></ul></aside></li></ul></section></section></details><details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg> Properties</h2></summary><section><section class="tsd-panel tsd-member"><a id="data" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>data</span><a href="#data" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><div class="tsd-signature"><span class="tsd-kind-property">data</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a></div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L22">utils/Font.ts:22</a></li></ul></aside></section></section></details><details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg> Methods</h2></summary><section><section class="tsd-panel tsd-member"><a id="setFamily" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>set<wbr/>Family</span><a href="#setFamily" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="setFamily.setFamily-1" class="tsd-anchor"></a><span class="tsd-kind-call-signature">set<wbr/>Family</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">family</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a><a href="#setFamily.setFamily-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><div class="tsd-parameters"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameter-list"><li><span><span class="tsd-kind-parameter">family</span>: <span class="tsd-signature-type">string</span></span><div class="tsd-comment tsd-typography"><p>The font name</p>
+</div><div class="tsd-comment tsd-typography"></div></li></ul></div><h4 class="tsd-returns-title">Returns <a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a></h4><div class="tsd-comment tsd-typography"></div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L32">utils/Font.ts:32</a></li></ul></aside></li></ul></section><section class="tsd-panel tsd-member"><a id="setPath" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>set<wbr/>Path</span><a href="#setPath" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="setPath.setPath-1" class="tsd-anchor"></a><span class="tsd-kind-call-signature">set<wbr/>Path</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">path</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a><a href="#setPath.setPath-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><div class="tsd-comment tsd-typography"><p>Set the path where this font is located.
+THE BASE FOLDER IN THE PATH IS THE ROOT FOLDER OF THE PROJECT.</p>
+</div><div class="tsd-parameters"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameter-list"><li><span><span class="tsd-kind-parameter">path</span>: <span class="tsd-signature-type">string</span></span><div class="tsd-comment tsd-typography"><p>The path to the font file</p>
+</div><div class="tsd-comment tsd-typography"></div></li></ul></div><h4 class="tsd-returns-title">Returns <a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a></h4><div class="tsd-comment tsd-typography"><h4 class="tsd-anchor-link"><a id="Example-1" class="tsd-anchor"></a>Example<a href="#Example-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="ts"><span class="hl-4">&#39;./some/path/to/font.ttf&#39;</span>
+</code><button type="button">Copy</button></pre>
+
+</div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L53">utils/Font.ts:53</a></li></ul></aside></li></ul></section><section class="tsd-panel tsd-member"><a id="setWeight" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>set<wbr/>Weight</span><a href="#setWeight" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="setWeight.setWeight-1" class="tsd-anchor"></a><span class="tsd-kind-call-signature">set<wbr/>Weight</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">weight</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a><a href="#setWeight.setWeight-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><div class="tsd-parameters"><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameter-list"><li><span><span class="tsd-kind-parameter">weight</span>: <br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;normal&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;italic&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold italic&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;regular&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;semi-bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;light&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-light&quot;</span></span><div class="tsd-comment tsd-typography"><p>The font weight</p>
+</div><div class="tsd-comment tsd-typography"></div></li></ul></div><h4 class="tsd-returns-title">Returns <a href="Font.html" class="tsd-signature-type tsd-kind-class">Font</a></h4><div class="tsd-comment tsd-typography"></div><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L41">utils/Font.ts:41</a></li></ul></aside></li></ul></section><section class="tsd-panel tsd-member"><a id="toJSON" class="tsd-anchor"></a><h3 class="tsd-anchor-link"><span>toJSON</span><a href="#toJSON" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="toJSON.toJSON-1" class="tsd-anchor"></a><span class="tsd-kind-call-signature">toJSON</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">family</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">structureType</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">weight</span><span class="tsd-signature-symbol">: </span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;normal&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;italic&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold italic&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;regular&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;semi-bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;light&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-light&quot;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">toJSON</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><a href="#toJSON.toJSON-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">family</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">structureType</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">weight</span><span class="tsd-signature-symbol">: </span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;normal&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;italic&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold italic&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;regular&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;semi-bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-bold&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;light&quot;</span><br/><span>        </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-light&quot;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-call-signature">toJSON</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h4><ul class="tsd-parameters"><li class="tsd-parameter"><h5><span class="tsd-kind-property">family</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li><li class="tsd-parameter"><h5><span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li><li class="tsd-parameter"><h5><span class="tsd-kind-property">structure<wbr/>Type</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li><li class="tsd-parameter"><h5><span class="tsd-kind-property">weight</span><span class="tsd-signature-symbol">: </span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;normal&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;italic&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;bold italic&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;regular&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;semi-bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-bold&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;light&quot;</span><br/><span>    </span><span class="tsd-signature-symbol">| </span><span class="tsd-signature-type">&quot;extra-light&quot;</span></h5></li><li class="tsd-parameter"><h5><span class="tsd-kind-method">toJSON</span><span class="tsd-signature-symbol">:</span>function</h5><ul class="tsd-signatures"><li class="tsd-signature tsd-anchor-link"><a id="toJSON.toJSON-1.__type.toJSON-2.toJSON-3" class="tsd-anchor"></a><span class="tsd-kind-call-signature">toJSON</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a><a href="#toJSON.toJSON-1.__type.toJSON-2.toJSON-3" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></li><li class="tsd-description"><h4 class="tsd-returns-title">Returns <a href="../interfaces/LazyCanvasFont.html" class="tsd-signature-type tsd-kind-interface">LazyCanvasFont</a></h4><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/types/LazyCanvasFont.d.ts#L7">types/LazyCanvasFont.d.ts:7</a></li></ul></aside></li></ul></li></ul><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/hitomihiumi/lazy-canvas-ts/blob/091cbe188bc52d3539bebb6c174711c11d99b4d2/src/utils/Font.ts#L59">utils/Font.ts:59</a></li></ul></aside></li></ul></section></section></details></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="tsd-otp-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary><div><a href="#constructor" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details><details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="tsd-otp-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary><div><a href="#data" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-1024"></use></svg><span>data</span></a></div></details><details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="tsd-otp-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary><div><a href="#setFamily" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Family</span></a><a href="#setPath" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Path</span></a><a href="#setWeight" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>set<wbr/>Weight</span></a><a href="#toJSON" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-2048"></use></svg><span>toJSON</span></a></div></details></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="../modules.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="../assets/icons.svg#icon-1"></use></svg><span>Lazy Canvas - v1.1.5</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base=".."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div><script>
+          try {
+            const generateLinkElement = document.querySelector(".tsd-generator a");
+            const link = document.createElement("a");
+            Object.assign(link, {
+              href: "https://github.com/dmnsgn/typedoc-material-theme",
+              target: "_blank",
+              rel: "noreferrer",
+              innerText: "typedoc-material-theme."
+            });
+            generateLinkElement.insertAdjacentElement("afterend", link);
+            generateLinkElement.insertAdjacentText("afterend", " with ");
+          } catch (error) {
+
+          }
+        </script></body></html>
