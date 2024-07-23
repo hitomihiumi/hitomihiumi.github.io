@@ -12,7 +12,7 @@ export default function Home() {
                       </h1>
                   </div>
                   <Image
-                      src="/bgheader.png"
+                      src="/home/bgheader.png"
                       alt="bgheader"
                       width={1826}
                       height={517}
@@ -27,21 +27,21 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-center mt-12">
               <Card
-                  imageSrc="/placeholder.jpg"
+                  imageSrc="/home/placeholder.jpg"
                   title="Lazy Canvas"
                   description="This is a simple module designed to simplify the interaction with canvas, for people who do not know how to work with it."
                   githubLink="https://github.com/hitomihiumi/lazy-canvas-ts"
                   docsLink="/docs/lazycanvas/index.html"
               />
               <Card
-                  imageSrc="/placeholder.jpg"
+                  imageSrc="/home/placeholder.jpg"
                   title="Lazy Animation"
                   description="Plugin for LazyCanvas, designed to provide animated image creation functionality."
                   githubLink="https://github.com/hitomihiumi/lazy-animation"
                   docsLink="/docs/lazyanimation/index.html"
               />
               <Card
-                  imageSrc="/placeholder.jpg"
+                  imageSrc="/home/placeholder.jpg"
                   title="2048 Game"
                   description="This is a simple logic and rendering module for the game 2048, it is mainly intended for users of discord.js etc."
                   githubLink="https://github.com/hitomihiumi/2048-game"
