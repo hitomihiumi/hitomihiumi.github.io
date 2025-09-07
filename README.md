@@ -58,7 +58,7 @@ export const constants = {
 3. Configure your overlay settings
 4. Copy the generated overlay URL
 5. Update the Browser Source URL with your overlay URL
-6. Set Width: 1920, Height: 1080
+6. Set Width: 400, Height: 600
 7. Check "Shutdown source when not visible"
 
 ## 🎨 Customization Options
@@ -164,7 +164,7 @@ The overlay uses TMI.js for Twitch chat connection. The library is included stat
 ### OBS Studio
 1. Add "Browser Source"
 2. Use your overlay URL
-3. Set dimensions to 1920x1080
+3. Set dimensions to 400x600
 4. Enable "Shutdown source when not visible"
 
 ### Streamlabs OBS
