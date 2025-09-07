@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-playpen: 'Playpen Sans', sans-serif;
+}
+
+/* Custom animations for chat messages */
+@keyframes slide-in {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    max-height: 50vh;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out {
+  to {
+    transform: translateX(100vw);
+    opacity: 0;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1em);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Chat message container */
+.chat-message-container {
+  position: relative;
+  margin: 8px auto;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Username bubble styles */
+.username-bubble {
+  position: relative;
+  z-index: 10;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-bottom: -12px;
+  border: 2px solid transparent; /* Default border */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Default text shadow */
+}
+
+/* Message bubble styles */
+.message-bubble {
+  position: relative;
+  z-index: 5;
+  padding: 20px 20px 12px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  text-align: center;
+  min-width: 18rem;
+  max-width: 18rem;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); /* Default text shadow */
+}
+
+/* Broadcaster styles */
+.chat-bubble-broadcaster .username-bubble {
+  background: #f3ebe8;
+  color: #fa95cd;
+  animation: glow 3s infinite ease-in-out;
+  text-shadow: 1px 1px 1px #ffffff;
+}
+
+.chat-bubble-broadcaster .message-bubble {
+  background: #fa95cd;
+  color: #f3ebe8;
+  animation: glow 3s infinite ease-in-out;
+  text-shadow: 1px 1px 1px #494949;
+}
+
+/* Subscriber styles */
+.chat-bubble-subscriber .username-bubble {
+  background: #a6608d;
+  color: #f3ebe8;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.chat-bubble-subscriber .message-bubble {
+  background: #f3ebe8;
+  color: #a6608d;
+  text-shadow: 1px 1px 1px #6c6c6c;
+}
+
+/* Moderator styles */
+.chat-bubble-mod .username-bubble {
+  background: #fffbfb;
+  color: #a6608d;
+  text-shadow: 1px 1px 1px #ffffff;
+}
+
+.chat-bubble-mod .message-bubble {
+  background: #a6608d;
+  color: #fffbfb;
+  text-shadow: 1px 1px 1px #3b3b3b;
+}
+
+/* VIP styles */
+.chat-bubble-vip .username-bubble {
+    background: #a6608d;
+    color: #f3ebe8;
+    text-shadow: 1px 1px 1px #000000;
+}
+
+.chat-bubble-vip .message-bubble {
+    background: #f3ebe8;
+    color: #a6608d;
+    text-shadow: 1px 1px 1px #6c6c6c;
+}
+
+/* Default user styles */
+.chat-bubble-default .username-bubble {
+  background: #f990c8;
+  color: #ffffff;
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.chat-bubble-default .message-bubble {
+  background: #ffffff;
+  color: #f990c8;
+  text-shadow: 1px 1px 1px #4d4d4d;
+}
+
+/* Third-party emote styling */
+img[alt][title] {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Custom animation utilities */
+.animate-slide-in {
+  animation: slide-in 1s ease-out;
+}
+
+.animate-slide-out {
+  animation: slide-out 0.5s ease-in forwards;
+  animation-fill-mode: forwards;
+}
