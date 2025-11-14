@@ -16,6 +16,7 @@ export default function ChatOverlay() {
   const [settings, setSettings] = useState<ChatSettings>({});
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userProfileCache, setUserProfileCache] = useState<Record<string, string>>({});
   const twitchClientRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -121,7 +122,7 @@ export default function ChatOverlay() {
 
     const messageLimit = parseInt(hs.limit?.toString() ?? "50"); // дефолт 50 сообщений
 
-    client.on('message', (channel: string, tags: any, message: string, self: boolean) => {
+    client.on('message', async (channel: string, tags: any, message: string) => {
       // Handle commands
       if (message.startsWith('!')) {
         if ((isModerator(tags) || isBroadcaster(tags)) && message === '!clear') {
@@ -141,6 +142,27 @@ export default function ChatOverlay() {
       // Используем TMI ID для предотвращения дублирования
       const messageId = tags.id || `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+      // Fetch user profile image if not cached
+      let profileImageUrl = userProfileCache[tags.username];
+      if (!profileImageUrl) {
+        try {
+          const headers = authHeaders();
+          const userData = await fetch(
+            `https://api.twitch.tv/helix/users?login=${tags.username}`,
+            { headers }
+          )
+            .then(r => r.json())
+            .then(j => j.data[0]);
+
+          if (userData?.profile_image_url) {
+            profileImageUrl = userData.profile_image_url;
+            setUserProfileCache(prev => ({ ...prev, [tags.username]: profileImageUrl }));
+          }
+        } catch (error) {
+          console.warn(`Failed to fetch profile image for ${tags.username}:`, error);
+        }
+      }
+
       const newMessage: TwitchMessage = {
         message,
         tags,
@@ -148,6 +170,7 @@ export default function ChatOverlay() {
         expired: false,
         dead: false,
         id: messageId,
+        profileImageUrl,
       };
 
       setMessages(prev => {
@@ -277,7 +300,7 @@ export default function ChatOverlay() {
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute bottom-0 w-full flex flex-col justify-end gap-2 p-4 max-h-screen overflow-hidden">
+      <div className={`absolute bottom-0 w-full flex flex-col justify-end gap-2 p-4 max-h-screen overflow-hidden items-${settings.alignment || 'center'}`}>
         {messages
           .filter(msg => !msg.dead)
           .map(message => (
@@ -288,6 +311,7 @@ export default function ChatOverlay() {
               globalBadges={globalBadges}
               thirdPartyEmotes={thirdPartyEmotes}
               onAnimationEnd={handleAnimationEnd}
+              alignment={settings.alignment || 'center'}
             />
           ))}
       </div>

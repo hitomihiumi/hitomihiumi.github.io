@@ -19,6 +19,7 @@ export default function OAuthPage() {
     lifetime: '',
     exclude: '',
     limit: '',
+    alignment: 'center' as 'left' | 'center' | 'right',
   });
 
   const [colorSettings, setColorSettings] = useState({
@@ -208,6 +209,7 @@ export default function OAuthPage() {
         lifetime: '',
         exclude: '',
         limit: '',
+        alignment: 'center',
       });
 
       setColorSettings({
@@ -395,6 +397,50 @@ export default function OAuthPage() {
                       <div className="text-sm text-gray-400 mt-1">
                         The maximum number of messages to display in the overlay.
                         If left blank, there is no limit.
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block font-medium text-gray-200 mb-2">
+                        Message alignment:
+                      </label>
+                      <div className="flex gap-4">
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="alignment"
+                            value="left"
+                            checked={formData.alignment === 'left'}
+                            onChange={(e) => handleInputChange('alignment', e.target.value)}
+                            className="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-2"
+                          />
+                          <span className="text-gray-200">Left</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="alignment"
+                            value="center"
+                            checked={formData.alignment === 'center'}
+                            onChange={(e) => handleInputChange('alignment', e.target.value)}
+                            className="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-2"
+                          />
+                          <span className="text-gray-200">Center</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="alignment"
+                            value="right"
+                            checked={formData.alignment === 'right'}
+                            onChange={(e) => handleInputChange('alignment', e.target.value)}
+                            className="h-4 w-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-2"
+                          />
+                          <span className="text-gray-200">Right</span>
+                        </label>
+                      </div>
+                      <div className="text-sm text-gray-400 mt-1">
+                        Choose how chat messages are aligned on the screen.
                       </div>
                     </div>
                   </div>

@@ -15,6 +15,7 @@ export interface TwitchMessage {
   expired: boolean;
   dead: boolean;
   id?: string;
+  profileImageUrl?: string;
 }
 
 export interface TwitchUser {
@@ -54,4 +55,5 @@ export interface ChatSettings {
   oauth?: string;
   channel?: string;
   limit?: number; // лимит сообщений на экране
+  alignment?: 'left' | 'center' | 'right'; // позиционирование сообщений
 }

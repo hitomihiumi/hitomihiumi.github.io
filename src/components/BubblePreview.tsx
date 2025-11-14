@@ -97,6 +97,13 @@ export default function BubblePreview({
           textShadow: usernameTextShadowColor ? `1px 1px 1px ${usernameTextShadowColor}` : `1px 1px 1px ${colors.usernameTextShadow}`
         }}
       >
+        {/* Placeholder avatar */}
+        <div
+          className="h-5 w-5 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold"
+          style={{ flexShrink: 0 }}
+        >
+          {username.charAt(0).toUpperCase()}
+        </div>
         <span>{username}</span>
       </div>
 

@@ -11,6 +11,7 @@ interface ChatMessageProps {
   globalBadges: Record<string, Record<string, Badge>>;
   thirdPartyEmotes?: EmoteMap;
   onAnimationEnd: (messageId: string, animationName: string) => void;
+  alignment?: 'left' | 'center' | 'right';
 }
 
 export default function ChatMessage({
@@ -19,6 +20,7 @@ export default function ChatMessage({
   globalBadges,
   thirdPartyEmotes = {},
   onAnimationEnd,
+  alignment = 'center',
 }: ChatMessageProps) {
   const [localMessage, setLocalMessage] = useState(message);
 
@@ -69,6 +71,7 @@ export default function ChatMessage({
     const baseClasses = [
       "chat-message-container",
       `chat-bubble-${role}`,
+      `chat-align-${alignment}`,
       "font-(family-name:--font-playpen)",
       localMessage.displaying && "animate-slide-in",
       localMessage.expired && "animate-slide-out",
@@ -161,6 +164,17 @@ export default function ChatMessage({
           textShadow: customColors?.usernameTextShadow ? `1px 1px 1px ${customColors.usernameTextShadow}` : undefined
         }}
       >
+        {localMessage.profileImageUrl && (
+          <img
+            className="inline h-5 w-5 rounded-full align-middle"
+            src={localMessage.profileImageUrl}
+            alt=""
+            onError={(e) => {
+              // Hide avatar if it fails to load
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+        )}
         {badges.map((badge, index) => (
           <img
             key={index}
