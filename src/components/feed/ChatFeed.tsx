@@ -109,6 +109,7 @@ export default function ChatFeed({
           minHeight: '100%',
           height: '100%',
           zoom: g.scale,
+          containerType: 'inline-size',
         }}
       >
         {ordered.map((item) => (

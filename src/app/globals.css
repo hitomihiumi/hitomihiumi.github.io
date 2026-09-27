@@ -6,12 +6,23 @@
   position: relative;
   display: flex;
   max-width: 100%;
+  min-width: 0;
 }
 
 .cb-body {
   position: relative;
   isolation: isolate;
   width: fit-content;
+  min-width: var(--cb-min);
+  max-width: var(--cb-max);
+}
+
+/* Never wider than the chat area (the feed is a size container). */
+@supports (width: 1cqw) {
+  .cb-body {
+    min-width: min(var(--cb-min), 100cqw);
+    max-width: min(var(--cb-max), 100cqw);
+  }
 }
 
 .cb-layer {
@@ -35,6 +46,8 @@
   z-index: 3;
   line-height: 1.4;
   overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
 }
 
 .cb-message > span {
@@ -45,8 +58,28 @@
   display: inline-block;
   height: var(--cb-emote, 26px);
   width: auto;
+  max-width: 100%;
   vertical-align: middle;
   margin: -4px 1px;
+  object-fit: contain;
+}
+
+.cb-emote-stack {
+  position: relative;
+  display: inline-grid;
+  vertical-align: middle;
+  margin: -4px 1px;
+}
+
+.cb-emote-stack > * {
+  grid-area: 1 / 1;
+  margin: 0;
+  justify-self: center;
+  align-self: center;
+}
+
+.cb-emote-only .cb-emote {
+  height: calc(var(--cb-emote, 26px) * 2);
 }
 
 .cb-mention {
@@ -59,6 +92,8 @@
 
 .cb-tag {
   white-space: nowrap;
+  width: max-content;
+  max-width: 100%;
 }
 
 .cb-name-row {
@@ -67,12 +102,22 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  max-width: 100%;
+}
+
+.cb-name-row > * {
+  min-width: 0;
+}
+
+.cb-name-row > :first-child:not(:last-child) {
+  flex-shrink: 0;
 }
 
 .cb-inline-tag {
   display: inline-block;
   vertical-align: middle;
   margin-right: 6px;
+  max-width: 100%;
 }
 
 .cb-pill {
@@ -82,6 +127,21 @@
   gap: 4px;
   line-height: 1.25;
   white-space: nowrap;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.cb-pill > img,
+.cb-pill > svg,
+.cb-pill > .cb-pronouns {
+  flex-shrink: 0;
+}
+
+.cb-pill > span:not(.cb-tail) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cb-avatar {
@@ -95,6 +155,12 @@
 .cb-badge {
   width: 1.2em;
   height: 1.2em;
+}
+
+.cb-name-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cb-pronouns {
@@ -274,16 +340,43 @@
   background-position: 0 0, 0 12px, 12px -12px, -12px 0;
 }
 
+.editor-root,
+.editor-root * {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f50 transparent;
+}
+
+.editor-root ::-webkit-scrollbar,
 .editor-scroll::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
+.editor-root ::-webkit-scrollbar-track,
+.editor-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-root ::-webkit-scrollbar-thumb,
 .editor-scroll::-webkit-scrollbar-thumb {
   background: #3f3f50;
   border-radius: 8px;
 }
 
-input[type='range'].editor-range {
-  accent-color: #818cf8;
+.editor-root ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.editor-root textarea::-webkit-resizer {
+  background: transparent;
+}
+
+.editor-root input::placeholder,
+.editor-root textarea::placeholder {
+  color: #71717a;
+}
+
+.editor-root ::selection {
+  background: #6366f1aa;
+  color: #fff;
 }

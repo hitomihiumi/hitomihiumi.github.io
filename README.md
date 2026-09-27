@@ -11,7 +11,7 @@ A modern, customizable Twitch chat overlay built with Next.js and TailwindCSS. P
 - **Themes**: ready-made presets (Lavender Bloom, Forest Axolotl, Bunny Pink, Night Sky, Classic, Minimal) to start from
 - **Fonts**: any Google Font per element, uppercase / letter spacing / text shadows
 - **Name tag extras**: avatars, Twitch badges, pronouns (pronouns.alejo.io), viewer name colors
-- **Emotes**: Twitch, BetterTTV and 7TV
+- **Emotes**: Twitch, 7TV, BetterTTV and FrankerFaceZ, including zero-width (overlay) emotes; emote-only messages are shown bigger
 - **Live preview**: simulated chat, gallery of all styles, demo link for OBS
 - **Portable**: the whole design is compressed into the overlay URL; export/import as JSON; old overlay links keep working
 - **Static export**: runs on GitHub Pages, no server needed

@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import type { Fill, ShadowStyle, StickerKind, TextStyle } from '@/types/overlay';
 import { FONT_OPTIONS } from '@/lib/fonts';
 import { STICKERS, STICKER_KINDS, Sticker } from '@/lib/stickers';
+import { ColorPicker, Dropdown, Popover, Range, Stepper } from './widgets';
 
 /* ------------------------------ layout ------------------------------ */
 
@@ -55,39 +56,19 @@ export function TextInput({ value, onChange, placeholder, multiline }: { value: 
 }
 
 export function NumberInput({ value, onChange, min, max, step = 1, suffix }: { value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string }) {
-  const [draft, setDraft] = useState(String(value));
-  useEffect(() => setDraft(String(value)), [value]);
-  return (
-    <div className="relative">
-      <input
-        type="number"
-        className={`${inputCls} pr-7`}
-        value={draft}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(e) => {
-          setDraft(e.target.value);
-          const n = parseFloat(e.target.value);
-          if (Number.isFinite(n)) onChange(n);
-        }}
-        onBlur={() => setDraft(String(value))}
-      />
-      {suffix && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 pointer-events-none">{suffix}</span>}
-    </div>
-  );
+  return <Stepper value={value} onChange={onChange} min={min} max={max} step={step} suffix={suffix} />;
 }
 
 export function Slider({ label, value, onChange, min = 0, max = 100, step = 1, suffix }: { label: string; value: number; onChange: (v: number) => void; min?: number; max?: number; step?: number; suffix?: string }) {
   return (
     <div>
-      <div className="flex items-center justify-between mb-0.5">
+      <div className="flex items-center justify-between mb-1">
         <span className="text-xs text-zinc-400">{label}</span>
-        <div className="w-20">
+        <div className="w-24">
           <NumberInput value={value} onChange={onChange} step={step} suffix={suffix} />
         </div>
       </div>
-      <input type="range" className="editor-range w-full" value={value} min={min} max={max} step={step} onChange={(e) => onChange(parseFloat(e.target.value))} />
+      <Range value={value} min={min} max={max} step={step} onChange={onChange} />
     </div>
   );
 }
@@ -114,15 +95,7 @@ export function Toggle({ label, checked, onChange, hint }: { label: string; chec
 
 export function Select<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: { value: T; label: string }[] | readonly T[] }) {
   const opts = (options as (T | { value: T; label: string })[]).map((o) => (typeof o === 'string' ? { value: o, label: o } : o));
-  return (
-    <select className={inputCls} value={value} onChange={(e) => onChange(e.target.value as T)}>
-      {opts.map((o) => (
-        <option key={o.value} value={o.value}>
-          {o.label}
-        </option>
-      ))}
-    </select>
-  );
+  return <Dropdown value={value} onChange={onChange} options={opts} />;
 }
 
 export function Segmented<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: { value: T; label: ReactNode; title?: string }[] }) {
@@ -145,49 +118,26 @@ export function Segmented<T extends string>({ value, onChange, options }: { valu
 
 /* ------------------------------- color ------------------------------- */
 
-const parseColor = (c: string): { hex: string; alpha: number } => {
-  const m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(c.trim());
-  if (m) return { hex: `#${m[1]}`, alpha: m[2] ? parseInt(m[2], 16) / 255 : 1 };
-  const s = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(c.trim());
-  if (s) return { hex: `#${s[1]}${s[1]}${s[2]}${s[2]}${s[3]}${s[3]}`, alpha: 1 };
-  return { hex: '#000000', alpha: 1 };
-};
-
-const withAlpha = (hex: string, alpha: number) =>
-  alpha >= 1 ? hex : `${hex}${Math.round(Math.max(0, alpha) * 255).toString(16).padStart(2, '0')}`;
-
 export function ColorInput({ value, onChange, label }: { value: string; onChange: (v: string) => void; label?: string }) {
-  const { hex, alpha } = parseColor(value);
-  const [draft, setDraft] = useState(value);
-  useEffect(() => setDraft(value), [value]);
+  const [open, setOpen] = useState(false);
+  const anchor = useRef<HTMLButtonElement>(null);
   return (
     <div>
       {label && <div className="text-xs text-zinc-400 mb-1">{label}</div>}
-      <div className="flex items-center gap-1.5">
-        <label className="relative w-8 h-8 rounded-md overflow-hidden border border-white/15 shrink-0 cursor-pointer editor-checker">
+      <button
+        ref={anchor}
+        type="button"
+        onClick={() => setOpen(!open)}
+        className={`w-full flex items-center gap-2 bg-zinc-900 border rounded-md p-1 pr-2 text-left ${open ? 'border-indigo-400' : 'border-white/10 hover:border-white/20'}`}
+      >
+        <span className="relative w-7 h-7 rounded editor-checker overflow-hidden border border-white/15 shrink-0">
           <span className="absolute inset-0" style={{ background: value }} />
-          <input type="color" value={hex} onChange={(e) => onChange(withAlpha(e.target.value, alpha))} className="absolute inset-0 opacity-0 cursor-pointer" />
-        </label>
-        <input
-          className={`${inputCls} font-mono text-xs`}
-          value={draft}
-          onChange={(e) => {
-            setDraft(e.target.value);
-            if (/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(e.target.value)) onChange(e.target.value);
-          }}
-          onBlur={() => setDraft(value)}
-        />
-        <input
-          type="range"
-          title="Opacity"
-          className="editor-range w-14 shrink-0"
-          min={0}
-          max={1}
-          step={0.01}
-          value={alpha}
-          onChange={(e) => onChange(withAlpha(hex, parseFloat(e.target.value)))}
-        />
-      </div>
+        </span>
+        <span className="flex-1 font-mono text-xs text-zinc-200 truncate">{value}</span>
+      </button>
+      <Popover anchor={anchor} open={open} onClose={() => setOpen(false)}>
+        <ColorPicker value={value} onChange={onChange} />
+      </Popover>
     </div>
   );
 }
@@ -236,19 +186,24 @@ export function ShadowInput({ value, onChange, label = 'Shadow' }: { value: Shad
 }
 
 export function FontInput({ value, onChange, allowInherit }: { value: string; onChange: (v: string) => void; allowInherit?: boolean }) {
-  const custom = value && !FONT_OPTIONS.includes(value);
+  const custom = !!value && !FONT_OPTIONS.includes(value);
+  const [other, setOther] = useState(custom);
+  const options = [
+    ...(allowInherit ? [{ value: '', label: 'Default font' }] : []),
+    ...FONT_OPTIONS.map((f) => ({ value: f, label: f, style: { fontFamily: `'${f}', system-ui` } })),
+    { value: '__custom', label: 'Other Google Font…' },
+  ];
   return (
     <div className="space-y-1.5">
-      <select className={inputCls} value={custom ? '__custom' : value} onChange={(e) => onChange(e.target.value === '__custom' ? value || 'Roboto' : e.target.value)}>
-        {allowInherit && <option value="">Default font</option>}
-        {FONT_OPTIONS.map((f) => (
-          <option key={f} value={f} style={{ fontFamily: f }}>
-            {f}
-          </option>
-        ))}
-        <option value="__custom">Other Google Font…</option>
-      </select>
-      {custom && <TextInput value={value} onChange={onChange} placeholder="Google Font name" />}
+      <Dropdown
+        value={custom || other ? '__custom' : value}
+        onChange={(v) => {
+          setOther(v === '__custom');
+          if (v !== '__custom') onChange(v);
+        }}
+        options={options}
+      />
+      {(custom || other) && <TextInput value={value} onChange={onChange} placeholder="Google Font name, e.g. Roboto" />}
     </div>
   );
 }

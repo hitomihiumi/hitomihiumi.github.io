@@ -2,12 +2,24 @@ import type { StyleKey } from '@/types/overlay';
 import type { BubbleData } from '@/components/bubble/Bubble';
 import type { FeedItem } from '@/components/feed/ChatFeed';
 import { tokenize } from './parse';
+import type { EmoteMap } from './emotes';
+
+/** A few global Twitch emotes so previews show emotes too. */
+const SAMPLE_EMOTES: EmoteMap = Object.fromEntries(
+  [
+    ['Kappa', '25'],
+    ['LUL', '425618'],
+    ['HeyGuys', '30259'],
+    ['PogChamp', '305954156'],
+    ['<3', '9'],
+  ].map(([code, id]) => [code, { code, id, provider: '7tv', url: `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/2.0` }]),
+);
 
 const SAMPLES: Record<StyleKey, { name: string; color: string; text: string; vars?: BubbleData['vars']; pronouns?: string }> = {
-  broadcaster: { name: 'Hitomi', color: '#ff7ac6', text: 'Welcome to the stream everyone! ✨', pronouns: 'She/Her' },
+  broadcaster: { name: 'Hitomi', color: '#ff7ac6', text: 'Welcome to the stream everyone! HeyGuys', pronouns: 'She/Her' },
   mod: { name: 'ModeratorMia', color: '#34d17c', text: 'Please be kind in chat, thank you!' },
   vip: { name: 'VipVincent', color: '#e05cf5', text: 'This is a VIP user message, recognized with a special badge' },
-  subscriber: { name: 'nasmediaa', color: '#8f7bff', text: 'Hey @Hitomi, I just resubscribed! Love you streamer' },
+  subscriber: { name: 'nasmediaa', color: '#8f7bff', text: 'Hey @Hitomi, I just resubscribed! Love you streamer <3' },
   first: { name: 'NewVisitor', color: '#4fb3ff', text: 'Hi! This is my first message here' },
   highlight: { name: 'MilaeShop', color: '#ffb84d', text: 'Highlighted my message with channel points!' },
   default: { name: 'viewer_42', color: '#ff9966', text: 'This is a regular viewer test message, a bit longer to show how text wraps inside the bubble.' },
@@ -32,7 +44,7 @@ export function sampleData(key: StyleKey, override?: { name?: string; text?: str
     avatar: avatarFor(name, s.color),
     badges: [],
     pronouns: s.pronouns ?? 'They/Them',
-    tokens: tokenize(override?.text || s.text, null),
+    tokens: tokenize(override?.text || s.text, null, SAMPLE_EMOTES),
     vars: s.vars,
   };
 }
@@ -47,6 +59,7 @@ const RANDOM_TEXT = [
   '@Hitomi what game is next?',
   'hydrate reminder 💧',
   'Kappa',
+  'PogChamp PogChamp',
   'the music is so good today',
 ];
 const KEYS: StyleKey[] = ['default', 'default', 'default', 'subscriber', 'subscriber', 'vip', 'mod', 'first', 'broadcaster', 'highlight', 'sub', 'resub', 'giftsub', 'cheer', 'raid'];
@@ -58,7 +71,7 @@ export function randomItem(): FeedItem {
   const key = KEYS[Math.floor(Math.random() * KEYS.length)];
   const base = sampleData(key);
   if (key !== 'broadcaster' && !['sub', 'resub', 'giftsub', 'cheer', 'raid'].includes(key) && Math.random() < 0.7) {
-    base.tokens = tokenize(RANDOM_TEXT[Math.floor(Math.random() * RANDOM_TEXT.length)], null);
+    base.tokens = tokenize(RANDOM_TEXT[Math.floor(Math.random() * RANDOM_TEXT.length)], null, SAMPLE_EMOTES);
   }
   return { id: `sim-${++counter}-${Date.now()}`, key, data: base };
 }

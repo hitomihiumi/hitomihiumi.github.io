@@ -1,6 +1,6 @@
 'use client';
 
-import type { CSSProperties, ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import type {
   BubbleStyle,
   Decoration,
@@ -13,7 +13,7 @@ import type {
 } from '@/types/overlay';
 import { Sticker } from '@/lib/stickers';
 import { fontStack } from '@/lib/fonts';
-import { fillTemplate, Token } from '@/lib/parse';
+import { fillTemplate, isEmoteOnly, Token } from '@/lib/parse';
 
 export interface BubbleData {
   name: string;
@@ -195,6 +195,27 @@ function NameContent({ name, data }: { name: NameTagStyle; data: BubbleData }) {
   );
 }
 
+/* ------------------------------- emotes ------------------------------- */
+
+/** Emote image that falls back to its name when the image can't be loaded. */
+function EmoteImg({ url, name, className }: { url: string; name: string; className: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <span>{name}</span>;
+  return <img className={className} src={url} alt={name} title={name} draggable={false} onError={() => setFailed(true)} />;
+}
+
+function Emote({ token }: { token: Extract<Token, { type: 'emote' }> }) {
+  if (!token.overlays?.length) return <EmoteImg className="cb-emote" url={token.url} name={token.name} />;
+  return (
+    <span className="cb-emote-stack">
+      <EmoteImg className="cb-emote" url={token.url} name={token.name} />
+      {token.overlays.map((o, i) => (
+        <EmoteImg key={i} className="cb-emote cb-emote-overlay" url={o.url} name={o.name} />
+      ))}
+    </span>
+  );
+}
+
 /* ------------------------------- bubble ------------------------------- */
 
 export default function Bubble({ style, general, data, isEvent, editable, selected }: BubbleProps) {
@@ -237,10 +258,10 @@ export default function Bubble({ style, general, data, isEvent, editable, select
 
   const vars = { name: data.name, ...(data.vars ?? {}) };
   const messageText = (
-    <span className="cb-message">
+    <span className={`cb-message ${isEmoteOnly(data.tokens) ? 'cb-emote-only' : ''}`}>
       {data.tokens.map((t, i) =>
         t.type === 'emote' ? (
-          <img key={i} className="cb-emote" src={t.url} alt={t.name} title={t.name} draggable={false} />
+          <Emote key={i} token={t} />
         ) : t.type === 'mention' ? (
           <span key={i} className="cb-mention">
             {t.text}
@@ -260,7 +281,7 @@ export default function Bubble({ style, general, data, isEvent, editable, select
       <div
         data-el="bubble"
         className={`cb-body cb-fx-${style.effect} ${cls('bubble')}`}
-        style={{ minWidth: style.minWidth, maxWidth: style.maxWidth }}
+        style={{ '--cb-min': `${style.minWidth}px`, '--cb-max': `${style.maxWidth}px` } as CSSProperties}
       >
         {bodyDecos
           .filter((d) => d.behind)
