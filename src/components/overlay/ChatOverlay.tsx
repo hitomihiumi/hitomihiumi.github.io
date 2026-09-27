@@ -99,7 +99,7 @@ function LiveChat({ config, hash }: { config: OverlayConfig; hash: Record<string
       .then((j) => j.data?.[0]);
     if (!user) throw new Error('Channel not found or token expired');
 
-    const [channelBadges, globalBadges, emotes] = await Promise.all([
+    let [channelBadges, globalBadges, emotes] = await Promise.all([
       fetch(`https://api.twitch.tv/helix/chat/badges?broadcaster_id=${user.id}`, { headers })
         .then((r) => r.json())
         .then((j) => toBadgeMap(j.data))
@@ -110,6 +110,15 @@ function LiveChat({ config, hash }: { config: OverlayConfig; hash: Record<string
         .catch(() => ({}) as BadgeMap),
       loadThirdPartyEmotes(user.id).catch(() => ({}) as EmoteMap),
     ]);
+
+    // 7TV / BTTV / FFZ emotes added during the stream show up after a refresh.
+    const emoteRefresh = setInterval(() => {
+      loadThirdPartyEmotes(user.id)
+        .then((m) => {
+          if (Object.keys(m).length) emotes = m;
+        })
+        .catch(() => {});
+    }, 31 * 60 * 1000);
 
     const g = cfg.general;
     const exclude = new Set(g.exclude.map((v) => v.toLowerCase()));
@@ -157,7 +166,7 @@ function LiveChat({ config, hash }: { config: OverlayConfig; hash: Record<string
           avatar: avatarUrl,
           badges: badges(tags),
           pronouns,
-          tokens: text ? tokenize(text, tags.emotes, emotes) : [],
+          tokens: text ? tokenize(text, tags.emotes ?? tags['emotes-raw'], emotes) : [],
           vars,
         },
       });
@@ -227,6 +236,12 @@ function LiveChat({ config, hash }: { config: OverlayConfig; hash: Record<string
     );
     client.on('connected', () => setStatus('connected'));
     client.on('disconnected', () => setStatus('connecting'));
+
+    const disconnect = client.disconnect.bind(client);
+    client.disconnect = () => {
+      clearInterval(emoteRefresh);
+      return disconnect();
+    };
 
     await client.connect();
     return client;

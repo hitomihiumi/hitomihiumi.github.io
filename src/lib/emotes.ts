@@ -1,150 +1,110 @@
-// 7TV and BetterTTV emotes integration
+// 7TV, BetterTTV and FrankerFaceZ emotes
 
 export type ThirdPartyEmote = {
   code: string;
   url: string;
-  provider: 'bttv' | '7tv';
+  provider: 'bttv' | '7tv' | 'ffz';
   id: string;
+  /** zero-width emotes are drawn on top of the previous emote */
+  zeroWidth?: boolean;
 };
 
 export type EmoteMap = Record<string, ThirdPartyEmote>;
 
-// Cache to avoid repeated API calls
-let cache: Record<string, { emotes: EmoteMap; timestamp: number }> = {};
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+const cache: Record<string, { emotes: Promise<EmoteMap>; timestamp: number }> = {};
+const CACHE_DURATION = 30 * 60 * 1000;
+
+/** BTTV emotes that act as overlays on the previous emote */
+const BTTV_ZERO_WIDTH = new Set(['SoSnowy', 'IceCold', 'SantaHat', 'TopHat', 'ReinDeer', 'CandyCane', 'cvMask', 'cvHazmat']);
 
 async function fetchJSON<T>(url: string): Promise<T> {
   const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status}`);
-  }
+  if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.status}`);
   return response.json();
 }
 
-async function loadBTTVEmotes(channelId?: string): Promise<EmoteMap> {
+/** Runs loaders independently: one failing source never hides the others. */
+async function collect(loaders: (() => Promise<ThirdPartyEmote[]>)[]): Promise<ThirdPartyEmote[]> {
+  const results = await Promise.allSettled(loaders.map((l) => l()));
+  return results.flatMap((r) => {
+    if (r.status === 'rejected') console.warn('[emotes]', r.reason?.message ?? r.reason);
+    return r.status === 'fulfilled' ? r.value : [];
+  });
+}
+
+const bttv = (e: { id: string; code: string }): ThirdPartyEmote => ({
+  code: e.code,
+  id: e.id,
+  provider: 'bttv',
+  url: `https://cdn.betterttv.net/emote/${e.id}/2x`,
+  zeroWidth: BTTV_ZERO_WIDTH.has(e.code),
+});
+
+const ffz = (e: { id: number; code: string; images: Record<string, string | null> }): ThirdPartyEmote => ({
+  code: e.code,
+  id: String(e.id),
+  provider: 'ffz',
+  url: e.images['2x'] ?? e.images['1x'] ?? `https://cdn.frankerfacez.com/emote/${e.id}/2`,
+});
+
+interface SevenTvEmote {
+  id: string;
+  name: string;
+  flags?: number;
+  data?: { flags?: number; host?: { url: string; files?: { name: string }[] } };
+}
+
+const seventv = (e: SevenTvEmote): ThirdPartyEmote => {
+  const host = e.data?.host;
+  const base = host?.url ? (host.url.startsWith('//') ? `https:${host.url}` : host.url) : `https://cdn.7tv.app/emote/${e.id}`;
+  const file = host?.files?.find((f) => f.name === '2x.webp') ? '2x.webp' : host?.files?.find((f) => f.name.endsWith('.webp'))?.name ?? '2x.webp';
+  return {
+    code: e.name,
+    id: e.id,
+    provider: '7tv',
+    url: `${base}/${file}`,
+    // active-emote flag 1 = zero width, emote data flag 256 = zero width
+    zeroWidth: ((e.flags ?? 0) & 1) === 1 || ((e.data?.flags ?? 0) & 256) === 256,
+  };
+};
+
+async function load(channelId?: string): Promise<EmoteMap> {
+  const list = await collect([
+    // Order matters: later sources win name conflicts (7TV > BTTV > FFZ).
+    () => fetchJSON<any[]>('https://api.betterttv.net/3/cached/frankerfacez/emotes/global').then((l) => l.map(ffzCached)),
+    ...(channelId
+      ? [() => fetchJSON<any[]>(`https://api.betterttv.net/3/cached/frankerfacez/users/twitch/${channelId}`).then((l) => l.map(ffzCached))]
+      : []),
+    () => fetchJSON<any[]>('https://api.betterttv.net/3/cached/emotes/global').then((l) => l.map(bttv)),
+    ...(channelId
+      ? [
+          () =>
+            fetchJSON<any>(`https://api.betterttv.net/3/cached/users/twitch/${channelId}`).then((u) =>
+              [...(u.channelEmotes ?? []), ...(u.sharedEmotes ?? [])].map(bttv),
+            ),
+        ]
+      : []),
+    () => fetchJSON<any>('https://7tv.io/v3/emote-sets/global').then((s) => (s.emotes ?? []).map(seventv)),
+    ...(channelId
+      ? [() => fetchJSON<any>(`https://7tv.io/v3/users/twitch/${channelId}`).then((u) => (u.emote_set?.emotes ?? []).map(seventv))]
+      : []),
+  ]);
   const map: EmoteMap = {};
-
-  try {
-    // Load global BTTV emotes
-    const globalEmotes = await fetchJSON<any[]>('https://api.betterttv.net/3/cached/emotes/global');
-
-    for (const emote of globalEmotes) {
-      map[emote.code] = {
-        code: emote.code,
-        url: `https://cdn.betterttv.net/emote/${emote.id}/3x.webp`,
-        provider: 'bttv',
-        id: emote.id
-      };
-    }
-
-    // Load channel-specific BTTV emotes if channelId is provided
-    if (channelId) {
-      try {
-        const userData = await fetchJSON<any>(`https://api.betterttv.net/3/cached/users/twitch/${channelId}`);
-        const channelEmotes = [...(userData.channelEmotes || []), ...(userData.sharedEmotes || [])];
-
-        for (const emote of channelEmotes) {
-          map[emote.code] = {
-            code: emote.code,
-            url: `https://cdn.betterttv.net/emote/${emote.id}/3x.webp`,
-            provider: 'bttv',
-            id: emote.id
-          };
-        }
-      } catch (error) {
-        console.warn('Failed to load BTTV channel emotes:', error);
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to load BTTV global emotes:', error);
-  }
-
+  for (const e of list) map[e.code] = e;
   return map;
 }
 
-async function load7TVEmotes(channelId?: string): Promise<EmoteMap> {
-  const map: EmoteMap = {};
+/** BTTV's cached FFZ endpoint uses `{ id, code, images: { '1x', '2x', '4x' } }` */
+const ffzCached = (e: any): ThirdPartyEmote => ffz({ id: e.id, code: e.code, images: e.images ?? {} });
 
-  try {
-    // Load global 7TV emotes
-    const globalData = await fetchJSON<any>('https://7tv.io/v3/emote-sets/global');
-
-    for (const emote of globalData.emotes || []) {
-      map[emote.name] = {
-        code: emote.name,
-        url: `https://cdn.7tv.app/emote/${emote.id}/3x.webp`,
-        provider: '7tv',
-        id: emote.id
-      };
-    }
-
-    // Load channel-specific 7TV emotes if channelId is provided
-    if (channelId) {
-      try {
-        const userData = await fetchJSON<any>(`https://7tv.io/v3/users/twitch/${channelId}`);
-        const channelEmotes = userData.emote_set?.emotes || [];
-
-        for (const emote of channelEmotes) {
-          map[emote.name] = {
-            code: emote.name,
-            url: `https://cdn.7tv.app/emote/${emote.id}/3x.webp`,
-            provider: '7tv',
-            id: emote.id
-          };
-        }
-      } catch (error) {
-        console.warn('Failed to load 7TV channel emotes:', error);
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to load 7TV global emotes:', error);
-  }
-
-  return map;
-}
-
-export async function loadThirdPartyEmotes(channelId?: string): Promise<EmoteMap> {
-  const cacheKey = channelId || 'global';
-  const cached = cache[cacheKey];
-
-  // Check if cache is still valid
-  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    return cached.emotes;
-  }
-
-  console.log('Loading third-party emotes for channel:', channelId || 'global');
-
-  try {
-    // Load both BTTV and 7TV emotes in parallel
-    const [bttvEmotes, seventvEmotes] = await Promise.all([
-      loadBTTVEmotes(channelId),
-      load7TVEmotes(channelId)
-    ]);
-
-    // Merge emotes (7TV takes precedence if there are name conflicts)
-    const allEmotes = { ...bttvEmotes, ...seventvEmotes };
-
-    // Cache the result
-    cache[cacheKey] = {
-      emotes: allEmotes,
-      timestamp: Date.now()
-    };
-
-    console.log(`Loaded ${Object.keys(allEmotes).length} third-party emotes`);
-    return allEmotes;
-  } catch (error) {
-    console.error('Failed to load third-party emotes:', error);
-    return {};
-  }
-}
-
-// Helper function to check if a string is an emote
-export function isThirdPartyEmote(text: string, emotes: EmoteMap): boolean {
-  return text in emotes;
-}
-
-// Helper function to get emote URL
-export function getEmoteUrl(emoteName: string, emotes: EmoteMap): string | null {
-  const emote = emotes[emoteName];
-  return emote ? emote.url : null;
+export function loadThirdPartyEmotes(channelId?: string): Promise<EmoteMap> {
+  const key = channelId || 'global';
+  const cached = cache[key];
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) return cached.emotes;
+  const emotes = load(channelId).then((map) => {
+    console.log(`[emotes] loaded ${Object.keys(map).length} 7TV / BTTV / FFZ emotes`);
+    return map;
+  });
+  cache[key] = { emotes, timestamp: Date.now() };
+  return emotes;
 }

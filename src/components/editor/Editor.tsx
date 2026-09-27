@@ -6,7 +6,7 @@ import { EVENT_KEYS, MESSAGE_KEYS, isEventKey } from '@/types/overlay';
 import { clone, deco as makeDeco, LABELS, normalizeConfig, uid } from '@/lib/config/defaults';
 import { PRESETS, defaultConfig } from '@/lib/config/presets';
 import { configFromHash, parseHash } from '@/lib/config/serialize';
-import { fontsInConfig, loadFonts } from '@/lib/fonts';
+import { FONT_OPTIONS, fontsInConfig, loadFonts } from '@/lib/fonts';
 import { sampleData, sampleItem, randomItem } from '@/lib/sample';
 import Bubble, { fillCss } from '@/components/bubble/Bubble';
 import ChatFeed, { resolveStyle, useFeed } from '@/components/feed/ChatFeed';
@@ -16,6 +16,7 @@ import { Palette, Layers } from './Palette';
 import ExportPanel, { Auth } from './ExportPanel';
 import { IconButton, Segmented, Section } from './controls';
 import { useHistory } from './useHistory';
+import { Dropdown, Range } from './widgets';
 
 const DRAFT_KEY = 'chat-overlay:draft';
 
@@ -138,6 +139,7 @@ export default function Editor({ auth, onLogout }: { auth: Auth | null; onLogout
 
   // Open a design passed in the URL (e.g. /editor/#cfg=…)
   useEffect(() => {
+    loadFonts(FONT_OPTIONS); // previews in the font pickers
     const hs = parseHash(window.location.hash);
     if (hs.cfg || hs.preset) configFromHash(hs).then(importConfig);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -227,7 +229,7 @@ export default function Editor({ auth, onLogout }: { auth: Auth | null; onLogout
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-zinc-950 text-zinc-100 text-sm overflow-hidden" style={{ fontFamily: 'system-ui, sans-serif' }}>
+    <div className="editor-root h-screen w-screen flex flex-col bg-zinc-950 text-zinc-100 text-sm overflow-hidden" style={{ fontFamily: 'system-ui, sans-serif' }}>
       {/* ---------------- top bar ---------------- */}
       <header className="h-12 shrink-0 flex items-center gap-3 px-4 border-b border-white/10 bg-zinc-900/60">
         <div className="font-semibold tracking-tight">
@@ -356,13 +358,14 @@ export default function Editor({ auth, onLogout }: { auth: Auth | null; onLogout
                   value={sample.text}
                   onChange={(e) => setSample({ ...sample, text: e.target.value })}
                 />
-                <select className="bg-zinc-900 border border-white/10 rounded px-1.5 py-1" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))}>
-                  {[1, 1.25, 1.5, 2, 2.5].map((z) => (
-                    <option key={z} value={z}>
-                      {Math.round(z * 100)}%
-                    </option>
-                  ))}
-                </select>
+                <div className="w-20">
+                  <Dropdown
+                    compact
+                    value={String(zoom)}
+                    onChange={(z) => setZoom(parseFloat(z))}
+                    options={[1, 1.25, 1.5, 2, 2.5].map((z) => ({ value: String(z), label: `${Math.round(z * 100)}%` }))}
+                  />
+                </div>
               </>
             )}
             {mode !== 'design' && <span className="flex-1 text-zinc-400">{mode === 'gallery' ? 'Click a bubble to edit its style' : 'Simulated chat with your current settings'}</span>}
@@ -536,11 +539,11 @@ function LivePreview({ config, background }: { config: OverlayConfig; background
         </button>
         <label className="block text-zinc-400">
           Interval: {(speed / 1000).toFixed(1)}s
-          <input type="range" className="editor-range w-full" min={400} max={5000} step={100} value={speed} onChange={(e) => setSpeed(parseInt(e.target.value))} />
+          <Range className="mt-1" min={400} max={5000} step={100} value={speed} onChange={setSpeed} />
         </label>
         <label className="block text-zinc-400">
           Source width: {width}px
-          <input type="range" className="editor-range w-full" min={280} max={1000} step={10} value={width} onChange={(e) => setWidth(parseInt(e.target.value))} />
+          <Range className="mt-1" min={280} max={1000} step={10} value={width} onChange={setWidth} />
         </label>
         <div className="text-zinc-500 pt-1">Send a test</div>
         <div className="grid grid-cols-2 gap-1">
