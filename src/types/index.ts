@@ -46,14 +46,3 @@ export interface BadgeSet {
   set_id: string;
   versions: Badge[];
 }
-
-export interface ChatSettings {
-  scroll?: boolean;
-  nocommand?: boolean;
-  lifetime?: number;
-  exclude?: string;
-  oauth?: string;
-  channel?: string;
-  limit?: number; // лимит сообщений на экране
-  alignment?: 'left' | 'center' | 'right'; // позиционирование сообщений
-}
