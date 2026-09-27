@@ -4,16 +4,17 @@ A modern, customizable Twitch chat overlay built with Next.js and TailwindCSS. P
 
 ## ✨ Features
 
-- **Beautiful Chat Bubbles**: Modern bubble-style message display with username badges
-- **Full Customization**: Customize colors, backgrounds, text shadows, and more for different user types
-- **User Role Support**: Different styling for broadcasters, moderators, subscribers, VIPs, and regular users
-- **Real-time Chat**: Live chat integration with Twitch using TMI.js
-- **Emote Support**: Full support for Twitch, BetterTTV and 7TV emotes with proper sizing and scaling
-- **Message Management**: Configurable message lifetime, limits, and user exclusion
-- **Advanced Color Picker**: Photoshop-style color picker with HEX, RGB, HSL support
-- **Settings Import/Export**: Save and share your overlay configurations
-- **Static Export Ready**: Built for serverless deployment and static hosting
-- **Responsive Design**: Works perfectly in OBS and other streaming software
+- **Visual editor** (`/editor/`): design every bubble with drag'n'drop — move name/role tags, drop stickers, emoji, images and lines onto the bubble, resize and rotate them, reorder layers, undo/redo
+- **Bubble designer**: rounded / notched / slanted shapes, solid & gradient fills, background images, gradient borders, offset back layer, shadows, glow / shine / pulse / float effects
+- **Per-role styles**: broadcaster, moderator, VIP, subscriber, first-time chatter, highlighted / channel-point messages and viewers — or fall back to the viewer style
+- **In-chat alerts**: new subs, resubs, gift subs, cheers and raids with their own bubble designs and text templates
+- **Themes**: ready-made presets (Lavender Bloom, Forest Axolotl, Bunny Pink, Night Sky, Classic, Minimal) to start from
+- **Fonts**: any Google Font per element, uppercase / letter spacing / text shadows
+- **Name tag extras**: avatars, Twitch badges, pronouns (pronouns.alejo.io), viewer name colors
+- **Emotes**: Twitch, BetterTTV and 7TV
+- **Live preview**: simulated chat, gallery of all styles, demo link for OBS
+- **Portable**: the whole design is compressed into the overlay URL; export/import as JSON; old overlay links keep working
+- **Static export**: runs on GitHub Pages, no server needed
 
 ## 🚀 Quick Start
 
@@ -51,44 +52,41 @@ export const constants = {
 3. Set output directory: `out`
 4. Deploy
 
-### 4. Setup in OBS
+### 4. Design and add to OBS
 
-1. Add a "Browser Source" in OBS
-2. Set URL to: `https://yourdomain.com/oauth`
-3. Configure your overlay settings
-4. Copy the generated overlay URL
-5. Update the Browser Source URL with your overlay URL
-6. Set Width: 400, Height: 600
-7. Check "Shutdown source when not visible"
+1. Open `https://yourdomain.com/editor/`
+2. Pick a theme and customize the bubbles (select a style on the left, drag elements on the canvas, tweak properties on the right)
+3. Click **Get OBS link** → **Connect with Twitch**
+4. Copy the overlay link and add it as a **Browser Source** in OBS (e.g. 500×800)
 
-## 🎨 Customization Options
+The design is kept in your browser, so you can come back to the editor at any time and copy a fresh link.
+Paste an existing overlay link into *Backup & import* to continue editing it.
 
-### User Role Styling
+## 🎨 Editor
 
-Configure different appearances for:
-- **Broadcasters/Streamers**: Special styling for the channel owner
-- **Moderators**: Distinctive look for channel moderators  
-- **Subscribers**: Custom styling for subscribers
-- **VIPs**: Special appearance for VIP users
-- **Default Users**: Standard styling for regular viewers
+| Area | What it does |
+| --- | --- |
+| Left: styles | Chat message styles per role and alert styles per event |
+| Left: Elements | Name tag, role tag and decorations — click to select, drag to reorder |
+| Left: + Decorations | Stickers, emoji, lines and images — drag onto the bubble or the name tag |
+| Canvas | Drag tags & decorations (snaps to edges/center, hold Alt to disable), resize/rotate handles |
+| Right: inspector | Every property of the selected element |
+| ⚙ Settings | Lifetime, limit, hidden users, !commands, stacking, alignment, font, scale, animations |
 
-### Color Customization
+Shortcuts: `Ctrl+Z` / `Ctrl+Shift+Z` undo/redo, `Del` delete, `Ctrl+D` duplicate, arrows nudge (Shift = larger steps), `Esc` select the bubble.
 
-For each user role, customize:
-- Username bubble background color
-- Message bubble background color
-- Username text color (separate from message text)
-- Message text color (separate from username text)
-- Username text shadow
-- Message text shadow
+Event templates support `{name}`, `{amount}`, `{months}`, `{tier}` and `{recipient}`.
 
-### Advanced Settings
+### Overlay URL parameters
 
-- **Message Lifetime**: How long messages stay visible (default: 90 seconds)
-- **Message Limit**: Maximum number of messages on screen
-- **User Exclusion**: Hide messages from specific users (useful for bots)
-- **Command Filtering**: Hide messages starting with "!" 
-- **Auto-scroll**: Automatically scroll to latest messages
+| Parameter | Meaning |
+| --- | --- |
+| `channel`, `oauth` | Channel and token (added by the editor) |
+| `cfg` | Compressed design (added by the editor) |
+| `preset` | Use a built-in theme instead of `cfg` (e.g. `preset=night`) |
+| `demo=1` | Show fake messages instead of connecting to Twitch |
+
+Links from the previous version (`lifetime`, `limit`, `exclude`, `nocommand`, `alignment`, `<role>MessageBg`, …) are still understood.
 
 ## 🛠️ Development
 
@@ -124,22 +122,23 @@ npm run build
 
 ```
 src/
-├── app/                    # Next.js app directory
-│   ├── page.tsx           # Main chat overlay page
-│   └── oauth/
-│       └── page.tsx       # OAuth setup and configuration
+├── app/
+│   ├── page.tsx              # The overlay (OBS browser source)
+│   ├── editor/page.tsx       # Visual editor
+│   └── oauth/page.tsx        # Twitch OAuth redirect → editor
 ├── components/
-│   ├── BubblePreview.tsx  # Color preview component
-│   ├── ChatMessage.tsx    # Individual chat message component  
-│   ├── ChatOverlay.tsx    # Main overlay logic
-│   └── ColorPicker.tsx    # Advanced color picker
+│   ├── bubble/Bubble.tsx     # Renders one bubble from a style (shared by overlay & editor)
+│   ├── feed/ChatFeed.tsx     # Message list, lifetime/limit, enter/leave animations
+│   ├── overlay/ChatOverlay.tsx  # Twitch connection and event handling
+│   └── editor/               # Editor UI: canvas (drag'n'drop), inspector, palette, export
 ├── lib/
-│   ├── constants.ts       # App configuration and defaults
-│   └── twitch.ts         # Twitch API integration
-├── types/
-│   └── index.ts          # TypeScript type definitions
-└── utils/
-    └── index.ts          # Utility functions
+│   ├── config/               # Defaults, themes, URL (de)serialization
+│   ├── stickers.tsx          # Built-in vector stickers
+│   ├── parse.ts              # Message → text / emote / mention tokens
+│   ├── emotes.ts, pronouns.ts, fonts.ts, twitch.ts, constants.ts
+└── types/
+    ├── index.ts              # Twitch API types
+    └── overlay.ts            # Overlay design model
 ```
 
 ## 🔧 Configuration
@@ -155,7 +154,6 @@ The overlay uses TMI.js for Twitch chat connection. The library is included stat
 ### Message Processing
 
 - **Emote Handling**: Automatic emote replacement with proper sizing
-- **Emote-only Messages**: Special handling for emote-only messages with larger display
 - **Message Filtering**: Commands and excluded users are filtered automatically
 - **Duplicate Prevention**: Built-in duplicate message detection
 
@@ -164,7 +162,7 @@ The overlay uses TMI.js for Twitch chat connection. The library is included stat
 ### OBS Studio
 1. Add "Browser Source"
 2. Use your overlay URL
-3. Set dimensions to 400x600
+3. Set dimensions to e.g. 500x800
 4. Enable "Shutdown source when not visible"
 
 ### Streamlabs OBS
@@ -185,10 +183,10 @@ The overlay uses TMI.js for Twitch chat connection. The library is included stat
 - Consider shorter message lifetimes for busy chats
 
 ### Visual Design
-- Test colors with different backgrounds
+- Check your design on different backgrounds (canvas background buttons in the editor)
 - Use text shadows for better readability
-- Preview different user types before going live
-- Export settings as backup before major changes
+- Use the *All styles* and *Live preview* tabs before going live
+- Export the design as JSON before major changes
 
 ### Chat Management
 - Add bots to exclusion list to reduce clutter
